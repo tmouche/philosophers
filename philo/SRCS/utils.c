@@ -6,11 +6,12 @@
 /*   By: tmouche <tmouche@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 15:07:48 by tmouche           #+#    #+#             */
-/*   Updated: 2024/03/07 16:27:34 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/03/08 16:33:04 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../HDRS/philo.h"
+#include <stdio.h>
 
 ssize_t	_atoi(char *str)
 {
@@ -23,7 +24,8 @@ ssize_t	_atoi(char *str)
 		++i;
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		res *= 10 + (str[i] - 48);
+		res *= 10; 
+		res += (str[i] - 48);
 		++i;
 	}
 	if (str[i] != 0)
