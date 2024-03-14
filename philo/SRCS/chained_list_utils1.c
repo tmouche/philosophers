@@ -6,7 +6,7 @@
 /*   By: tmouche <tmouche@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 12:33:19 by tmouche           #+#    #+#             */
-/*   Updated: 2024/03/12 19:13:50 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/03/14 14:37:40 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,13 @@ t_philo	*_lstnew(t_base *ref, int number)
 	mutex = malloc(sizeof(t_mutex_data));
 	if (!mutex)
 		return (NULL);
-	new->status = mutex;
+	new->fork = mutex;
 	new->rank = number;
 	new->time_eaten = 0;
 	new->time_to_die = 0;
 	new->time_to_eat = 0;
 	new->time_to_sleep = 0;
-	new->ref_philos = (size_t)ref->philos;
-	new->ref_t_to_die = (size_t)ref->time_to_die;
-	new->ref_t_to_eat = (size_t)ref->time_to_eat;
-	new->ref_t_to_sleep = (size_t)ref->time_to_sleep;
-	new->ref_mt_eat = (size_t)ref->max_time_eat;
+	new->ref = ref;
 	new->next = NULL;
 	new->prev = NULL;
 	return (new);
@@ -79,6 +75,8 @@ void	_lstclear(t_philo **lst)
 	while (*lst)
 	{
 		temp = temp->next;
+		pthread_mutex_destroy(&temp->fork->mutex);
+		free(temp->fork);
 		free(*lst);
 		*lst = temp;
 	}

@@ -6,7 +6,7 @@
 #    By: tmouche <tmouche@student.42lyon.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/18 10:53:51 by tmouche           #+#    #+#              #
-#    Updated: 2024/03/12 18:02:57 by tmouche          ###   ########.fr        #
+#    Updated: 2024/03/14 14:27:28 by tmouche          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRCS_D	:= SRCS/
 HDRS_D	:= HDRS/
 OBJS_D	:= OBJS/
 
-#CFLAGS	:= -Wall -Wextra -Werror -g
+CFLAGS	:= -Wall -Wextra -Werror -g -pthread
 CC		:= cc
 AR		:= ar rcs
 RM		:= rm -rf

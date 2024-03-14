@@ -6,7 +6,7 @@
 /*   By: tmouche <tmouche@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:44:55 by tmouche           #+#    #+#             */
-/*   Updated: 2024/03/12 18:09:34 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/03/14 16:23:12 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,43 +20,59 @@
 
 typedef	struct s_mutex_data
 {
-	char			data;
+	int				*data;
 	pthread_mutex_t	mutex;
 }				t_mutex_data;
 
+typedef struct s_clocker
+{
+	int		m_sec;
+	int		sec;
+}				t_clocker;
+
+typedef	struct s_state
+{
+	int	*eat;
+	int	*sleep;
+	int	*think;
+	int	*fork_taken;
+	int	*fork_free;
+}				t_state;
+
 typedef struct s_base
 {
-	size_t		philos;
-	size_t		time_to_die;
-	size_t		time_to_eat;
-	size_t		time_to_sleep;
-	size_t		max_time_eat;
+	int		philos;
+	int		time_to_die;
+	int		time_to_eat;
+	int		time_to_sleep;
+	int		max_time_eat;
 }				t_base;
 
 typedef struct s_philo
 {
-	t_mutex_data	*status;
-	size_t			rank;
-	size_t			time_to_die;
-	size_t			time_to_eat;
-	size_t			time_to_sleep;
-	size_t			time_eaten;
-	size_t			ref_philos;
-	size_t			ref_t_to_die;
-	size_t			ref_t_to_eat;
-	size_t			ref_t_to_sleep;
-	size_t			ref_mt_eat;
+	t_mutex_data	*fork;
+	int				*status;
+	int				rank;
+	int				fork_num;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				time_eaten;
+	t_base			*ref;
+	t_state			*state;
+	t_clocker		*clocker;
 	struct s_philo	*prev;
 	struct s_philo	*next;
 }				t_philo;
 
 ssize_t	_atoi(char *str);
+void	_init_state(t_state *state);
 
-int		_lstsize(t_philo *lst);
 t_philo	*_lstlast(t_philo *lst);
 t_philo	*_lstnew(t_base *ref, int number);
 int		_lstadd_back(t_philo **lst, t_philo *new);
 void	_lstclear(t_philo **lst);
 void	*_routine(void *args);
+void	*_clocker(void *args)
 
 #endif
