@@ -6,7 +6,7 @@
 /*   By: tmouche <tmouche@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 15:07:48 by tmouche           #+#    #+#             */
-/*   Updated: 2024/03/14 16:27:27 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/03/18 15:47:02 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void	*_clocker(void *args)
+int	_strchr(char *src, char *str)
 {
-	struct timeval	clock;
-	t_mutex_data	*mutex;
-	int				cloker[2];
+	int	i_src;
+	int	i_str;
 
-	clocker = (t_clocker *)args;
-	mutex = malloc(sizeof(t_mutex_data));
-	if (!mutex)
-		exit (EXIT_FAILURE);
-	while (1)
+	i = 0;
+	while (src[i])
 	{
-		gettimeofday(&clock, NULL);
-		clocker->m_sec = clock.tv_usec / M_SEC;
-		clocker->sec = clock.tv_sec / M_SEC;
+		if (src[i])
 	}
 }
 

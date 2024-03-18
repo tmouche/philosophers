@@ -6,7 +6,7 @@
 /*   By: tmouche <tmouche@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:44:55 by tmouche           #+#    #+#             */
-/*   Updated: 2024/03/14 16:23:12 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/03/18 15:14:42 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,19 @@ typedef struct s_philo
 	struct s_philo	*next;
 }				t_philo;
 
-ssize_t	_atoi(char *str);
-void	_init_state(t_state *state);
+void	_philo_exec(t_philo *philo, pthread_t *threads, t_base *ref);
+void	_init_philo_status(t_state *state, t_philo *philo);
+void	_init_reference(t_base *ref, char **av, int ac);
+t_philo **_init_philo(t_base *ref, t_state *state, t_philo **philo);
 
-t_philo	*_lstlast(t_philo *lst);
-t_philo	*_lstnew(t_base *ref, int number);
-int		_lstadd_back(t_philo **lst, t_philo *new);
-void	_lstclear(t_philo **lst);
-void	*_routine(void *args);
-void	*_clocker(void *args)
+ssize_t		_atoi(char *str);
+void		_init_state(t_state *state);
+void		_write_error(int num);
+
+t_philo		*_lstlast(t_philo *lst);
+t_philo		*_lstnew(t_base *ref, int number);
+int			_lstadd_back(t_philo **lst, t_philo *new);
+void		_lstclear(t_philo **lst);
+void		*_routine(void *args);
 
 #endif

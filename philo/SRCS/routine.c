@@ -6,7 +6,7 @@
 /*   By: tmouche <tmouche@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 14:13:15 by tmouche           #+#    #+#             */
-/*   Updated: 2024/03/14 15:49:08 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/03/18 15:45:30 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static inline void	_printer(size_t *starter, int num_philo, char *str)
 	struct timeval	clock;
 	size_t			time_stamp;
 
+	if (_strchr("is dead", str) == 1)
+		return ;
 	gettimeofday(&clock, NULL);
 	time_stamp = clock.tv_usec / M_SEC + ((clock.tv_sec - starter[0]) * 1000) - starter[1];
 	printf("%ld %d %s\n", time_stamp, num_philo, str);
@@ -35,6 +37,7 @@ static inline void	_thinking(t_philo *philo, size_t *starter)
 	philo->prev->fork->data = philo->state->fork_taken;
 	_printer(starter, philo->rank, "has taken a fork");
 	philo->status = philo->state->eat;
+	philo->time_to_die = 0;
 	_printer(starter, philo->rank, "is eating");
 }
 
@@ -56,7 +59,6 @@ static inline void	_eating(t_philo *philo, size_t *starter)
 	{
 		++philo->time_eaten;
 		philo->time_to_eat = 0;
-		philo->time_to_die = 0;
 		if (philo->ref->max_time_eat == philo->time_eaten)
 			exit (EXIT_SUCCESS);
 		philo->fork->data = philo->state->fork_free;
