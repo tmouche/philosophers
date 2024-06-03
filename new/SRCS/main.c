@@ -6,7 +6,7 @@
 /*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:02:42 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/03 19:01:25 by thibaud          ###   ########.fr       */
+/*   Updated: 2024/06/04 00:34:14 by thibaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,6 @@ int	main(int ac, char **av)
 	if (ac < 5 || ac > 6)
 		_exit_failure(NULL, "error : Incorrect number of arguments\n");
 	_init_argument(&args, av, ac);
+	ev_thing.head = _init_philos(ev_thing, args);
 	
 }

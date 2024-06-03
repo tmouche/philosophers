@@ -6,7 +6,7 @@
 /*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:08:13 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/03 19:04:24 by thibaud          ###   ########.fr       */
+/*   Updated: 2024/06/04 00:41:54 by thibaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,6 @@ typedef struct s_ref
 	int		max_time_eat;
 }				t_ref;
 
-typedef struct s_data
-{
-	int	time;
-}				t_data;
-
 typedef struct s_philo
 {
 	t_mutex_data	*fork;
@@ -49,6 +44,13 @@ typedef struct s_philo
 	struct s_philo	*prev;
 	struct s_philo	*next;
 }				t_philo;
+
+typedef struct s_data
+{
+	int	time;
+	t_philo	*head;
+	
+}				t_data;
 
 ssize_t	_atoi(char *str);
 size_t	ft_strlen(const char *s, char c);
