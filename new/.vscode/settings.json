@@ -1,0 +1,7 @@
+{
+	"files.associations": {
+		"main.C": "cpp",
+		"philo.h": "c"
+	},
+	"C_Cpp.errorSquiggles": "enabledIfIncludesResolve"
+}

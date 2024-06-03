@@ -5,53 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/07 15:07:48 by tmouche           #+#    #+#             */
-/*   Updated: 2024/06/02 22:28:47 by thibaud          ###   ########.fr       */
+/*   Created: 2024/06/03 02:07:30 by thibaud           #+#    #+#             */
+/*   Updated: 2024/06/03 18:23:13 by thibaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../HDRS/philo.h"
-#include <sys/time.h>
-#include <limits.h>
-#include <stdio.h>
+#include <unistd.h>
 #include <stdlib.h>
-
-// int	_strchr(char *src, char *str)
-// {
-// 	int	i_src;
-// 	int	i_str;
-
-// 	i = 0;
-// 	while (src[i])
-// 	{
-// 		if (src[i])
-// 	}
-// }
-
-void	_write_error(int num)
-{
-	printf("Error : ");
-	if (num == 0)
-		printf("Incorrect number of arguments\n");
-	else if (num == 1)
-		printf("Invalid argument\n");
-	exit (EXIT_FAILURE);
-}
-
-void	_init_state(t_state *state)
-{
-	static int	eat;
-	static int	sleep;
-	static int	think;
-	static int	fork_free;
-	static int	fork_taken;
-	
-	state->eat = &eat;
-	state->sleep = &sleep;
-	state->think = &think;
-	state->fork_free = &fork_free;
-	state->fork_taken = &fork_taken;
-}
 
 ssize_t	_atoi(char *str)
 {
@@ -71,4 +32,26 @@ ssize_t	_atoi(char *str)
 	if (str[i] != 0)
 		return (-1);
 	return (res);
+}
+
+size_t	ft_strlen(const char *s, char c)
+{
+	size_t	i;
+
+	i = 0;
+	if (!s)
+		return (0);
+	while (s[i] && s[i] != c)
+		i++;
+	return (i);
+}
+
+void	_exit_failure(t_data *args, char *str)
+{
+	if (args)
+	{
+		
+	}
+	write(2, str, ft_strlen(str, 0));
+	exit(EXIT_FAILURE);
 }
