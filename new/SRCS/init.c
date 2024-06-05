@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
+/*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 00:35:50 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/05 18:33:52 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/05 19:37:17 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,14 @@ void	_init_philo_status(t_philo *philo, int name)
 		printf("%d %d has taken a fork\n", 0, philo->name);
 		pthread_mutex_lock(philo->next->fork);
 		printf("%d %d has taken a fork\n", 0, philo->name);
+		philo->state = EATING;
 		printf("%d %d is eating\n", 0, philo->name);
 	}
 	else
+	{
+		philo->state = THINKING;
 		printf("%d %d is thinking\n", 0, philo->name);
+	}
 }
 
 t_philo	*_init_philos(t_data *ev_thing, t_ref *args)

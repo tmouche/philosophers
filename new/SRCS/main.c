@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
+/*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:02:42 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/05 18:48:05 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/05 19:43:17 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,21 @@ void	*_stopwatch(void *time)
 		*(int *)time = tv.tv_usec * M_SEC;
 }
 
+void	_philo_exec(t_data *ev_thing, pthread_t *threads)
+{
+	int	i;
+	
+	if (pthread_create(&threads[0], NULL, _stopwatch, &ev_thing->time) != 0)
+	i = 1;
+	while (i <= )
+	{
+		if (pthread_create(&threads[i], NULL, _routine, philo) != 0)
+			_exit_failure(ev_thing, "Pthread failed\n");
+		philo = philo->next;
+		++i;
+	}
+}
+
 int	main(int ac, char **av)
 {
 	pthread_t	*threads;
@@ -60,7 +75,9 @@ int	main(int ac, char **av)
 	ev_thing.head = _init_philos(&ev_thing, &args);
 	if (!ev_thing.head)
 		return (free(threads), -1);
-	_philo_exec(philo, threads, &ref);
+	ev_thing.threads = threads;
+	ev_thing.args = &args;
+	_philo_exec();
 	
 	
 	

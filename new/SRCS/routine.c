@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmouche <tmouche@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 14:13:15 by tmouche           #+#    #+#             */
-/*   Updated: 2024/03/18 15:45:30 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/05 19:23:59 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static inline void	_printer(size_t *starter, int num_philo, char *str)
-{
-	struct timeval	clock;
-	size_t			time_stamp;
+// static inline void	_printer(size_t *starter, int num_philo, char *str)
+// {
+// 	struct timeval	clock;
+// 	size_t			time_stamp;
 
-	if (_strchr("is dead", str) == 1)
-		return ;
-	gettimeofday(&clock, NULL);
-	time_stamp = clock.tv_usec / M_SEC + ((clock.tv_sec - starter[0]) * 1000) - starter[1];
-	printf("%ld %d %s\n", time_stamp, num_philo, str);
-}
+// 	if (_strchr("is dead", str) == 1)
+// 		return ;
+// 	gettimeofday(&clock, NULL);
+// 	time_stamp = clock.tv_usec / M_SEC + ((clock.tv_sec - starter[0]) * 1000) - starter[1];
+// 	printf("%ld %d %s\n", time_stamp, num_philo, str);
+// }
 
 static inline void	_thinking(t_philo *philo, size_t *starter)
 {
