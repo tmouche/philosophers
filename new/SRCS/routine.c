@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
+/*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 14:13:15 by tmouche           #+#    #+#             */
-/*   Updated: 2024/06/05 19:23:59 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/06 01:16:22 by thibaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,33 +72,22 @@ static inline void	_eating(t_philo *philo, size_t *starter)
 
 void	*_routine(void *args)
 {
-	struct timeval	clock;
 	t_philo			*philo;
-	size_t			starter[2];
-	int				temp_usec;
 	
 	philo = (t_philo *)args;
-	gettimeofday(&clock, NULL);
-	starter[0] = clock.tv_sec;
-	starter[1] = clock.tv_usec / M_SEC;
-	temp_usec = clock.tv_usec / M_SEC;
 	while (1)
 	{
-		gettimeofday(&clock, NULL);
-		if (temp_usec != clock.tv_usec / M_SEC)
+		if (philo->time_to_die == philo->args->time_to_die )
 		{
-			if (++philo->time_to_die == philo->ref->time_to_die)
-			{
-				_printer(starter, philo->rank, "is dead");
-				exit (EXIT_FAILURE);
-			}
-			if (philo->status == philo->state->eat)
-				_eating(philo, starter);
-			else if (philo->status == philo->state->sleep)
-				_sleeping(philo, starter);
-			else
-				_thinking(philo, starter);
-			temp_usec = clock.tv_usec / M_SEC;
+			_printer(starter, philo->rank, "is dead");
+			exit (EXIT_FAILURE);
 		}
+		if (philo->status == philo->state->eat)
+			_eating(philo, starter);
+		else if (philo->status == philo->state->sleep)
+			_sleeping(philo, starter);
+		else
+			_thinking(philo, starter);
+		temp_usec = clock.tv_usec / M_SEC;
 	}
 }

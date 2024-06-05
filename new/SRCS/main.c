@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
+/*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:02:42 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/05 19:43:17 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/05 22:29:38 by thibaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,12 @@ void	*_stopwatch(void *time)
 {
 	struct timeval	tv;
 	
-	gettimeofday(&tv, NULL);
-	if (*(int *)time != tv.tv_usec * M_SEC)
-		*(int *)time = tv.tv_usec * M_SEC;
+	while (1)
+	{
+		gettimeofday(&tv, NULL);
+		if (*(int *)time != tv.tv_usec * M_SEC)
+			*(int *)time = tv.tv_usec * M_SEC;
+	}
 }
 
 void	_philo_exec(t_data *ev_thing, pthread_t *threads)
