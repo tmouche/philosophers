@@ -6,7 +6,7 @@
 /*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:02:42 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/05 18:33:02 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/05 18:48:05 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,10 @@ int	main(int ac, char **av)
 	if (!threads)
 		return (-1);
 	ev_thing.head = _init_philos(&ev_thing, &args);
+	if (!ev_thing.head)
+		return (free(threads), -1);
+	_philo_exec(philo, threads, &ref);
+	
 	
 	
 }
