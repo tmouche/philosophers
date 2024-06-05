@@ -6,7 +6,7 @@
 /*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 12:33:19 by tmouche           #+#    #+#             */
-/*   Updated: 2024/06/04 00:47:02 by thibaud          ###   ########.fr       */
+/*   Updated: 2024/06/04 20:45:58 by thibaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_philo	*_lstnew(t_ref *args, int number)
 	if (!mutex)
 		return (NULL);
 	new->fork = mutex;
+	new->fork->data = 0;
 	new->time_eaten = 0;
 	new->time_to_die = 0;
 	new->time_to_eat = 0;
@@ -43,13 +44,13 @@ t_philo	*_lstlast(t_philo *lst)
 	return (lst);
 }
 
-int	_lstadd_back(t_philo **lst, t_philo *new)
+int	_lstadd_back(t_philo *lst, t_philo *new)
 {
 	t_philo	*lst_temp;
 
-	if (*lst)
+	if (lst)
 	{
-		lst_temp = _lstlast(*lst);
+		lst_temp = _lstlast(lst);
 		lst_temp->next = new;
 		new->prev = lst_temp;
 		new->next = *lst;
@@ -64,7 +65,7 @@ int	_lstadd_back(t_philo **lst, t_philo *new)
 	return (0);
 }
 
-void	_lstclear(t_philo **lst)
+void	_lstclear(t_philo *lst)
 {
 	t_philo	*temp;
 

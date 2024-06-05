@@ -6,7 +6,7 @@
 /*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:08:13 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/04 00:41:54 by thibaud          ###   ########.fr       */
+/*   Updated: 2024/06/04 23:41:00 by thibaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 typedef	struct s_mutex_data
 {
-	int				*data;
+	_Bool			data;
 	pthread_mutex_t	mutex;
 }				t_mutex_data;
 
@@ -35,6 +35,7 @@ typedef struct s_philo
 {
 	t_mutex_data	*fork;
 	int				name;
+	int				state;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
@@ -51,6 +52,14 @@ typedef struct s_data
 	t_philo	*head;
 	
 }				t_data;
+
+typedef enum	e_state
+{
+	EATING,
+	SLEEPING,
+	THINKING,
+	DEAD
+}				t_state;
 
 ssize_t	_atoi(char *str);
 size_t	ft_strlen(const char *s, char c);
