@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:08:13 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/04 23:41:00 by thibaud          ###   ########.fr       */
+/*   Updated: 2024/06/05 18:22:19 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,8 @@ typedef enum	e_state
 ssize_t	_atoi(char *str);
 size_t	ft_strlen(const char *s, char c);
 void	_exit_failure(t_data *args, char *str);
+t_philo	*_init_philos(t_data *ev_thing, t_ref *args);
+
+t_philo	*_lstnew(t_ref *args, int number);
 
 #endif

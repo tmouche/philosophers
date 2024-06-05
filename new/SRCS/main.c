@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:02:42 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/04 00:34:14 by thibaud          ###   ########.fr       */
+/*   Updated: 2024/06/05 18:33:02 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,28 @@ void	_init_argument(t_ref *args, char **av, int ac)
 		args->max_time_eat = temp[5];
 }
 
-void	_stopwatch(int time)
+void	*_stopwatch(void *time)
 {
 	struct timeval	tv;
-
+	
 	gettimeofday(&tv, NULL);
-	if (time != tv.tv_usec * M_SEC)
-		time = tv.tv_usec * M_SEC;
+	if (*(int *)time != tv.tv_usec * M_SEC)
+		*(int *)time = tv.tv_usec * M_SEC;
 }
 
 int	main(int ac, char **av)
 {
-	t_data	ev_thing;
-	t_ref	args;
+	pthread_t	*threads;
+	t_data		ev_thing;
+	t_ref		args;
 	
 	if (ac < 5 || ac > 6)
 		_exit_failure(NULL, "error : Incorrect number of arguments\n");
 	_init_argument(&args, av, ac);
-	ev_thing.head = _init_philos(ev_thing, args);
+	threads = malloc(sizeof(pthread_t) * (args.philos + 1));
+	if (!threads)
+		return (-1);
+	ev_thing.head = _init_philos(&ev_thing, &args);
+	
 	
 }

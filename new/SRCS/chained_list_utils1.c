@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chained_list_utils1.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 12:33:19 by tmouche           #+#    #+#             */
-/*   Updated: 2024/06/04 20:45:58 by thibaud          ###   ########.fr       */
+/*   Updated: 2024/06/05 18:22:46 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,49 +36,20 @@ t_philo	*_lstnew(t_ref *args, int number)
 	return (new);
 }
 
-t_philo	*_lstlast(t_philo *lst)
-{
-	while (lst->rank != 1)
-		lst = lst->next;
-	lst = lst->prev;
-	return (lst);
-}
+// void	_lstclear(t_philo *lst)
+// {
+// 	t_philo	*temp;
 
-int	_lstadd_back(t_philo *lst, t_philo *new)
-{
-	t_philo	*lst_temp;
-
-	if (lst)
-	{
-		lst_temp = _lstlast(lst);
-		lst_temp->next = new;
-		new->prev = lst_temp;
-		new->next = *lst;
-		(*lst)->prev = new;
-	}
-	else
-	{
-		*lst = new;
-		new->next = new;
-		new->prev = new;
-	}
-	return (0);
-}
-
-void	_lstclear(t_philo *lst)
-{
-	t_philo	*temp;
-
-	if (!lst)
-		return ;
-	temp = *lst;
-	while (*lst)
-	{
-		temp = temp->next;
-		pthread_mutex_destroy(&temp->fork->mutex);
-		free(temp->fork);
-		free(*lst);
-		*lst = temp;
-	}
-	exit (EXIT_FAILURE);
-}
+// 	if (!lst)
+// 		return ;
+// 	temp = *lst;
+// 	while (*lst)
+// 	{
+// 		temp = temp->next;
+// 		pthread_mutex_destroy(&temp->fork->mutex);
+// 		free(temp->fork);
+// 		free(*lst);
+// 		*lst = temp;
+// 	}
+// 	exit (EXIT_FAILURE);
+// }
