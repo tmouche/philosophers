@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
+/*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:08:13 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/05 19:39:27 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/06 05:25:55 by thibaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,12 @@ typedef struct s_data
 	pthread_t	*threads;
 	
 }				t_data;
+
+typedef enum	e_fstate
+{
+	TAKEN,
+	FREE
+}				t_fstate;
 
 typedef enum	e_state
 {
