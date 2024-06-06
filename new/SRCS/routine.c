@@ -6,7 +6,7 @@
 /*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 14:13:15 by tmouche           #+#    #+#             */
-/*   Updated: 2024/06/06 01:16:22 by thibaud          ###   ########.fr       */
+/*   Updated: 2024/06/06 02:17:06 by thibaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	*_routine(void *args)
 	philo = (t_philo *)args;
 	while (1)
 	{
-		if (philo->time_to_die == philo->args->time_to_die )
+		if (philo->time_to_die == philo->args->time_to_die)
 		{
 			_printer(starter, philo->rank, "is dead");
 			exit (EXIT_FAILURE);
