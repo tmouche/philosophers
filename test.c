@@ -6,7 +6,7 @@
 /*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 22:43:48 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/06 03:55:21 by thibaud          ###   ########.fr       */
+/*   Updated: 2024/06/06 05:23:50 by thibaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,18 +64,30 @@ void	*fct_test1(void *args)
 	pthread_mutex_lock(&ptr->mutex->mutex);
 	printer("1 prelock\n");
 	printer("1 postlock\n");
-	pthread_mutex_unlock(&ptr->mutex->mutex);
+	// pthread_mutex_unlock(&ptr->mutex->mutex);
 }
 
 void	*fct_test2(void *args)
 {
 	t_args	*ptr;
+	int		i = 0;
 	
 	ptr = args;
-	pthread_mutex_lock(&ptr->mutex->mutex);
+	while (i < 100000)
+		++i;
+	ptr->mutex->data = 2;
+	printf("%d\n", ptr->mutex->data);
+	if (ptr->mutex->data == 2)
+		pthread_mutex_lock(&ptr->mutex->mutex);
+	else
+	{
+		printf("ok\n");
+		return (NULL);
+	}
 	printer("2 prelock\n");
 	printer("2 postlock\n");
 	pthread_mutex_unlock(&ptr->mutex->mutex);
+	pthread_mutex_trylock(); 
 }
 
 int main(void)
@@ -98,3 +110,5 @@ int main(void)
 	printf("end\n");
 	return (1);
 }
+
+POUR LE TRYLOCK CHECK LA VARIABLE DANS LE MUTEX;
