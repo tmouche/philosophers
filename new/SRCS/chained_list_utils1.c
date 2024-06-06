@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chained_list_utils1.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
+/*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 12:33:19 by tmouche           #+#    #+#             */
-/*   Updated: 2024/06/05 18:22:46 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/06 19:51:41 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,17 @@
 t_philo	*_lstnew(t_ref *args, int number)
 {
 	t_philo			*new;
-	t_mutex_data	*mutex;
+	t_mutex_data	*data;
+	t_mutex_simul	*simul;
 
 	new = malloc(sizeof(t_philo));
 	if (!new)
 		return (NULL);
-	mutex = malloc(sizeof(t_mutex_data));
-	if (!mutex)
-		return (NULL);
-	new->fork = mutex;
-	new->fork->data = 0;
+	data = malloc(sizeof(t_mutex_data));
+	if (!data)
+		return (free(new), free(simul), NULL);
+	new->fork = data;
+	new->fork->data = FREE;
 	new->time_eaten = 0;
 	new->time_to_die = 0;
 	new->time_to_eat = 0;

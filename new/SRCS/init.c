@@ -6,7 +6,7 @@
 /*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 00:35:50 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/05 19:37:17 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/06 19:52:16 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,13 @@ void	_init_philo_status(t_philo *philo, int name)
 {
 	if (name % 2 != 0 && philo->next->name != 1)
 	{
-		pthread_mutex_lock(philo->fork);
+		pthread_mutex_lock(&philo->fork->mutex);
+		philo->fork->data = TAKEN;
+		pthread_mutex_unlock(&philo->fork->mutex);
 		printf("%d %d has taken a fork\n", 0, philo->name);
-		pthread_mutex_lock(philo->next->fork);
+		pthread_mutex_lock(&philo->next->fork->mutex);
+		philo->next->fork->data = TAKEN;
+		pthread_mutex_unlock(&philo->next->fork->mutex);
 		printf("%d %d has taken a fork\n", 0, philo->name);
 		philo->state = EATING;
 		printf("%d %d is eating\n", 0, philo->name);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 22:43:48 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/06 05:23:50 by thibaud          ###   ########.fr       */
+/*   Updated: 2024/06/06 19:25:32 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ void	*fct_test1(void *args)
 	pthread_mutex_lock(&ptr->mutex->mutex);
 	printer("1 prelock\n");
 	printer("1 postlock\n");
-	// pthread_mutex_unlock(&ptr->mutex->mutex);
+	pthread_mutex_unlock(&ptr->mutex->mutex);
+	return (NULL);
 }
 
 void	*fct_test2(void *args)
@@ -87,7 +88,7 @@ void	*fct_test2(void *args)
 	printer("2 prelock\n");
 	printer("2 postlock\n");
 	pthread_mutex_unlock(&ptr->mutex->mutex);
-	pthread_mutex_trylock(); 
+	return (NULL);
 }
 
 int main(void)
@@ -110,5 +111,3 @@ int main(void)
 	printf("end\n");
 	return (1);
 }
-
-POUR LE TRYLOCK CHECK LA VARIABLE DANS LE MUTEX;

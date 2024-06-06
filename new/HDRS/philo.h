@@ -3,22 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:08:13 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/06 05:25:55 by thibaud          ###   ########.fr       */
+/*   Updated: 2024/06/06 19:51:14 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
-#define M_SEC 1000
-#include <stdlib.h>
-#include <pthread.h>
+# define M_SEC 1000
+# include <stdlib.h>
+# include <pthread.h>
+
+typedef	struct s_mutex_simul
+{
+	t_end			simul;
+	pthread_mutex_t	mutex;
+}				t_mutex_simul;
 
 typedef	struct s_mutex_data
 {
-	_Bool			data;
+	t_fstate		data;
 	pthread_mutex_t	mutex;
 }				t_mutex_data;
 
@@ -35,7 +41,7 @@ typedef struct s_philo
 {
 	t_mutex_data	*fork;
 	int				name;
-	int				state;
+	t_state			state;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
@@ -48,12 +54,17 @@ typedef struct s_philo
 
 typedef struct s_data
 {
-	int	time;
-	t_ref		*args;
-	t_philo		*head;
-	pthread_t	*threads;
-	
+	t_ref			*args;
+	t_philo			*head;
+	pthread_t		*threads;
+	t_mutex_simul	*simul;
 }				t_data;
+
+typedef enum	e_end
+{
+	ON,
+	OFF
+}				t_end;
 
 typedef enum	e_fstate
 {
@@ -75,5 +86,6 @@ void	_exit_failure(t_data *args, char *str);
 t_philo	*_init_philos(t_data *ev_thing, t_ref *args);
 
 t_philo	*_lstnew(t_ref *args, int number);
+void	*_routine(void *args);
 
 #endif

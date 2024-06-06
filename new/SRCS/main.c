@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:02:42 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/05 22:29:38 by thibaud          ###   ########.fr       */
+/*   Updated: 2024/06/06 19:59:58 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,43 +36,42 @@ void	_init_argument(t_ref *args, char **av, int ac)
 		args->max_time_eat = temp[5];
 }
 
-void	*_stopwatch(void *time)
-{
-	struct timeval	tv;
-	
-	while (1)
-	{
-		gettimeofday(&tv, NULL);
-		if (*(int *)time != tv.tv_usec * M_SEC)
-			*(int *)time = tv.tv_usec * M_SEC;
-	}
-}
-
 void	_philo_exec(t_data *ev_thing, pthread_t *threads)
 {
-	int	i;
+	t_philo	*philo;
+	int		i;
 	
-	if (pthread_create(&threads[0], NULL, _stopwatch, &ev_thing->time) != 0)
-	i = 1;
-	while (i <= )
+	i = 0;
+	while (i < ev_thing->args->philos)
 	{
 		if (pthread_create(&threads[i], NULL, _routine, philo) != 0)
 			_exit_failure(ev_thing, "Pthread failed\n");
 		philo = philo->next;
 		++i;
 	}
+	i = 0;
+	while (i < ev_thing->args->philos + 1)
+	{
+		pthread_join(threads[i], NULL);
+		i++;
+	}
 }
 
 int	main(int ac, char **av)
 {
-	pthread_t	*threads;
-	t_data		ev_thing;
-	t_ref		args;
+	t_mutex_simul	simul;
+	pthread_t		*threads;
+	t_data			ev_thing;
+	t_ref			args;
 	
 	if (ac < 5 || ac > 6)
 		_exit_failure(NULL, "error : Incorrect number of arguments\n");
 	_init_argument(&args, av, ac);
-	threads = malloc(sizeof(pthread_t) * (args.philos + 1));
+	if (pthread_mutex_init(&simul.mutex, NULL) != 0)
+		_exit_failure(NULL, "error: Mutex Init fail\n");
+	simul.simul = ON;
+	ev_thing.simul = &simul;
+	threads = malloc(sizeof(pthread_t) * (args.philos));
 	if (!threads)
 		return (-1);
 	ev_thing.head = _init_philos(&ev_thing, &args);
@@ -81,7 +80,4 @@ int	main(int ac, char **av)
 	ev_thing.threads = threads;
 	ev_thing.args = &args;
 	_philo_exec();
-	
-	
-	
 }
