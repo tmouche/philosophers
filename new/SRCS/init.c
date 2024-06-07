@@ -3,34 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 00:35:50 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/06 19:52:16 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/07 04:02:06 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../HDRS/philo.h"
+#include <stdio.h>
 
-void	_init_philo_status(t_philo *philo, int name)
+void	_init_philo_status(t_philo **philo)
 {
-	if (name % 2 != 0 && philo->next->name != 1)
+	t_philo	*head;
+
+	head = *(philo);
+	head->fork->data = TAKEN;
+	printf("%d %d has taken a fork\n", 0, head->name);
+	head->next->fork->data = TAKEN;
+	printf("%d %d has taken a fork\n", 0, head->name);
+	head->state = EATING;
+	printf("%d %d is eating\n", 0, head->name);
+	head = head->next;
+	while (head->name != 1)
 	{
-		pthread_mutex_lock(&philo->fork->mutex);
-		philo->fork->data = TAKEN;
-		pthread_mutex_unlock(&philo->fork->mutex);
-		printf("%d %d has taken a fork\n", 0, philo->name);
-		pthread_mutex_lock(&philo->next->fork->mutex);
-		philo->next->fork->data = TAKEN;
-		pthread_mutex_unlock(&philo->next->fork->mutex);
-		printf("%d %d has taken a fork\n", 0, philo->name);
-		philo->state = EATING;
-		printf("%d %d is eating\n", 0, philo->name);
-	}
-	else
-	{
-		philo->state = THINKING;
-		printf("%d %d is thinking\n", 0, philo->name);
+		if (head->name % 2 != 0 && head->next->name != 1)
+		{
+			head->fork->data = TAKEN;
+			printf("%d %d has taken a fork\n", 0, head->name);
+			head->next->fork->data = TAKEN;
+			printf("%d %d has taken a fork\n", 0, head->name);
+			head->state = EATING;
+			printf("%d %d is eating\n", 0, head->name);
+		}
+		else
+		{
+			head->state = THINKING;
+			printf("%d %d is thinking\n", 0, head->name);
+		}
+		head = head->next;
 	}
 }
 
@@ -48,7 +59,6 @@ t_philo	*_init_philos(t_data *ev_thing, t_ref *args)
 		temp = _lstnew(args, i);
 		if (!temp)
 			return (/*_lstclear(), */NULL);
-		_init_philo_status(temp, i);
 		if (temp_last)
 			temp_last->next = temp;
 		temp->prev = temp_last;
@@ -58,8 +68,9 @@ t_philo	*_init_philos(t_data *ev_thing, t_ref *args)
 	}
 	while (temp_last && temp_last->prev)
 		temp_last = temp_last->prev;
-	ev_thing = temp_last;
+	ev_thing->head = temp_last;
 	temp->next = ev_thing->head;
 	ev_thing->head->prev = temp;
+	_init_philo_status(&ev_thing->head);
 	return (ev_thing->head);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:08:13 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/06 19:51:14 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/07 03:16:51 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,26 @@
 # define M_SEC 1000
 # include <stdlib.h>
 # include <pthread.h>
+
+typedef enum	e_end
+{
+	ON,
+	OFF
+}				t_end;
+
+typedef enum	e_fstate
+{
+	TAKEN,
+	FREE
+}				t_fstate;
+
+typedef enum	e_state
+{
+	EATING,
+	SLEEPING,
+	THINKING,
+	DEAD
+}				t_state;
 
 typedef	struct s_mutex_simul
 {
@@ -42,12 +62,13 @@ typedef struct s_philo
 	t_mutex_data	*fork;
 	int				name;
 	t_state			state;
+	int				fhand;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				time_eaten;
 	t_ref			*args;
-	t_data			*ev_things;
+	struct s_data	*ev_things;
 	struct s_philo	*prev;
 	struct s_philo	*next;
 }				t_philo;
@@ -59,26 +80,6 @@ typedef struct s_data
 	pthread_t		*threads;
 	t_mutex_simul	*simul;
 }				t_data;
-
-typedef enum	e_end
-{
-	ON,
-	OFF
-}				t_end;
-
-typedef enum	e_fstate
-{
-	TAKEN,
-	FREE
-}				t_fstate;
-
-typedef enum	e_state
-{
-	EATING,
-	SLEEPING,
-	THINKING,
-	DEAD
-}				t_state;
 
 ssize_t	_atoi(char *str);
 size_t	ft_strlen(const char *s, char c);

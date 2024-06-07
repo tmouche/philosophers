@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:02:42 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/06 19:59:58 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/07 04:00:02 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../HDRS/philo.h"
 #include <sys/time.h>
 #include <string.h>
+#include <stdio.h>
 
 void	_init_argument(t_ref *args, char **av, int ac)
 {
@@ -20,20 +21,20 @@ void	_init_argument(t_ref *args, char **av, int ac)
 	int	i;
 
 	i = 0;
-	memset(temp, -1, 5);
-	while (i < ac)
+	memset(temp, -1, 4);
+	while (i < ac - 1)
 	{
 		temp[i] = _atoi(av[i + 1]);
 		if (temp[i] == -1)
 			_exit_failure(NULL, "Error : Invalid argument\n");
 		++i;
 	}
-	args->philos = temp[1];
-	args->time_to_die = temp[2];
-	args->time_to_eat = temp[3];
-	args->time_to_sleep = temp[4];
-	if (temp[5] != -1)
-		args->max_time_eat = temp[5];
+	args->philos = temp[0];
+	args->time_to_die = temp[1];
+	args->time_to_eat = temp[2];
+	args->time_to_sleep = temp[3];
+	if (temp[4] != -1)
+		args->max_time_eat = temp[4];
 }
 
 void	_philo_exec(t_data *ev_thing, pthread_t *threads)
@@ -79,5 +80,5 @@ int	main(int ac, char **av)
 		return (free(threads), -1);
 	ev_thing.threads = threads;
 	ev_thing.args = &args;
-	_philo_exec();
+	_philo_exec(&ev_thing, threads);
 }
