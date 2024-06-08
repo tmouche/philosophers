@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
+/*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:02:42 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/07 04:00:02 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/08 16:49:43 by thibaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	_philo_exec(t_data *ev_thing, pthread_t *threads)
 		++i;
 	}
 	i = 0;
-	while (i < ev_thing->args->philos + 1)
+	while (i < ev_thing->args->philos)
 	{
 		pthread_join(threads[i], NULL);
 		i++;

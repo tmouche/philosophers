@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
+/*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 14:13:15 by tmouche           #+#    #+#             */
-/*   Updated: 2024/06/07 03:26:08 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/08 17:47:20 by thibaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static inline void	_thinking(t_philo *philo,  size_t *timer)
 
 static inline void	_sleeping(t_philo *philo, size_t *timer)
 {
-	++philo->time_to_sleep;
+	philo->time_to_sleep += 1;
 	if (philo->time_to_sleep == philo->args->time_to_sleep)
 	{
 		philo->time_to_sleep = 0;
@@ -80,7 +80,7 @@ static inline void	_eating(t_philo *philo,  size_t *timer)
 	++philo->time_to_eat;
 	if (philo->time_to_eat == philo->args->time_to_eat)
 	{
-		++philo->time_eaten;
+		philo->time_eaten += 1;
 		philo->time_to_eat = 0;
 		if (philo->args->max_time_eat == philo->time_eaten)
 			exit (EXIT_SUCCESS);
@@ -113,7 +113,8 @@ void	*_routine(void *args)
 		gettimeofday(&clock, NULL);
 		if (temp_usec != clock.tv_usec / M_SEC)
 		{
-			if (++philo->time_to_die == philo->args->time_to_die)
+			philo->time_to_die += 1;
+			if (philo->time_to_die == philo->args->time_to_die)
 			{
 				philo->state = DEAD;
 				_printer(philo, starter, "is dead");
@@ -129,3 +130,5 @@ void	*_routine(void *args)
 		}
 	}
 }
+
+// printf("philo %d: %p, next %p, prev %p\n", philo->name, philo, philo->next, philo->prev);

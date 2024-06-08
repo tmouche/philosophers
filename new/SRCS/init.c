@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
+/*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 00:35:50 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/07 04:02:06 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/08 17:45:42 by thibaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ t_philo	*_init_philos(t_data *ev_thing, t_ref *args)
 		temp = _lstnew(args, i);
 		if (!temp)
 			return (/*_lstclear(), */NULL);
+		temp->ev_things = ev_thing;
 		if (temp_last)
 			temp_last->next = temp;
 		temp->prev = temp_last;
