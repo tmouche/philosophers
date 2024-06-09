@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmouche <tmouche@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 14:13:15 by tmouche           #+#    #+#             */
-/*   Updated: 2024/03/18 15:45:30 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/09 15:07:04 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static inline void	_eating(t_philo *philo, size_t *starter)
 		++philo->time_eaten;
 		philo->time_to_eat = 0;
 		if (philo->ref->max_time_eat == philo->time_eaten)
-			exit (EXIT_SUCCESS);
+			return (0);
 		philo->fork->data = philo->state->fork_free;
 		philo->prev->fork->data = philo->state->fork_free;
 		pthread_mutex_unlock(&philo->fork->mutex);
@@ -68,6 +68,7 @@ static inline void	_eating(t_philo *philo, size_t *starter)
 		philo->status = philo->state->sleep;
 		_printer(starter, philo->rank, "is sleeping");
 	}
+	return (1);
 }
 
 void	*_routine(void *args)
@@ -93,7 +94,8 @@ void	*_routine(void *args)
 				exit (EXIT_FAILURE);
 			}
 			if (philo->status == philo->state->eat)
-				_eating(philo, starter);
+				if (_eating(philo, starter) == 0);
+					return (NULL);
 			else if (philo->status == philo->state->sleep)
 				_sleeping(philo, starter);
 			else

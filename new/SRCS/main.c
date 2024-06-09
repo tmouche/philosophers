@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:02:42 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/08 16:49:43 by thibaud          ###   ########.fr       */
+/*   Updated: 2024/06/09 15:45:10 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,21 @@
 #include <string.h>
 #include <stdio.h>
 
-void	_init_argument(t_ref *args, char **av, int ac)
+static void 	_init_mutex(t_data *ev_thing)
+{
+	static t_mutex_simul	simul;
+	static t_mutex_start	start;
+	
+	if (pthread_mutex_init(&simul.mutex, NULL) != 0)
+		_exit_failure(NULL, "error: Mutex Init fail\n");
+	simul.simul = ON;
+	ev_thing->simul = &simul;
+	if (pthread_mutex_init(&start.mutex, NULL) != 0)
+		_exit_failure(NULL, "error: Mutex Init fail\n");
+	ev_thing->start = &start;
+}
+
+static void	_init_argument(t_ref *args, char **av, int ac)
 {
 	int	temp[5];
 	int	i;
@@ -37,12 +51,14 @@ void	_init_argument(t_ref *args, char **av, int ac)
 		args->max_time_eat = temp[4];
 }
 
-void	_philo_exec(t_data *ev_thing, pthread_t *threads)
+static void	_philo_exec(t_data *ev_thing, pthread_t *threads)
 {
 	t_philo	*philo;
 	int		i;
 	
 	i = 0;
+	philo = ev_thing->head;
+	pthread_mutex_lock(&ev_thing->start->mutex);
 	while (i < ev_thing->args->philos)
 	{
 		if (pthread_create(&threads[i], NULL, _routine, philo) != 0)
@@ -50,6 +66,7 @@ void	_philo_exec(t_data *ev_thing, pthread_t *threads)
 		philo = philo->next;
 		++i;
 	}
+	pthread_mutex_unlock(&ev_thing->start->mutex);
 	i = 0;
 	while (i < ev_thing->args->philos)
 	{
@@ -60,7 +77,6 @@ void	_philo_exec(t_data *ev_thing, pthread_t *threads)
 
 int	main(int ac, char **av)
 {
-	t_mutex_simul	simul;
 	pthread_t		*threads;
 	t_data			ev_thing;
 	t_ref			args;
@@ -68,10 +84,7 @@ int	main(int ac, char **av)
 	if (ac < 5 || ac > 6)
 		_exit_failure(NULL, "error : Incorrect number of arguments\n");
 	_init_argument(&args, av, ac);
-	if (pthread_mutex_init(&simul.mutex, NULL) != 0)
-		_exit_failure(NULL, "error: Mutex Init fail\n");
-	simul.simul = ON;
-	ev_thing.simul = &simul;
+	_init_mutex(&ev_thing);
 	threads = malloc(sizeof(pthread_t) * (args.philos));
 	if (!threads)
 		return (-1);

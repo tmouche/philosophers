@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
+/*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:08:13 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/07 03:16:51 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/09 15:32:31 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # define M_SEC 1000
 # include <stdlib.h>
 # include <pthread.h>
+# include <unistd.h>
 
 typedef enum	e_end
 {
@@ -35,6 +36,11 @@ typedef enum	e_state
 	THINKING,
 	DEAD
 }				t_state;
+
+typedef struct s_mutux_start
+{
+	pthread_mutex_t	mutex;
+}				t_mutex_start;
 
 typedef	struct s_mutex_simul
 {
@@ -79,6 +85,7 @@ typedef struct s_data
 	t_philo			*head;
 	pthread_t		*threads;
 	t_mutex_simul	*simul;
+	t_mutex_start	*start;
 }				t_data;
 
 ssize_t	_atoi(char *str);
