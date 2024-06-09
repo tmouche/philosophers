@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
+/*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:02:42 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/09 15:45:10 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/09 21:56:53 by thibaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ static void 	_init_mutex(t_data *ev_thing)
 	simul.simul = ON;
 	ev_thing->simul = &simul;
 	if (pthread_mutex_init(&start.mutex, NULL) != 0)
+	{
+		pthread_mutex_destroy(&start.mutex);
 		_exit_failure(NULL, "error: Mutex Init fail\n");
+	}
 	ev_thing->start = &start;
 }
 
