@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chained_list_utils1.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
+/*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 12:33:19 by tmouche           #+#    #+#             */
-/*   Updated: 2024/06/07 03:20:06 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/10 17:02:01 by thibaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,20 @@ t_philo	*_lstnew(t_ref *args, int number)
 	return (new);
 }
 
-// void	_lstclear(t_philo *lst)
-// {
-// 	t_philo	*temp;
+void	_lstclear(t_philo *lst, int	stop)
+{
+	t_philo	*temp;
 
-// 	if (!lst)
-// 		return ;
-// 	temp = *lst;
-// 	while (*lst)
-// 	{
-// 		temp = temp->next;
-// 		pthread_mutex_destroy(&temp->fork->mutex);
-// 		free(temp->fork);
-// 		free(*lst);
-// 		*lst = temp;
-// 	}
-// 	exit (EXIT_FAILURE);
-// }
+	if (!lst)
+		return ;
+	temp = lst;
+	while (lst)
+	{
+		temp = temp->prev;
+		if (stop == 1)
+			pthread_mutex_destroy(&temp->fork->mutex);
+		free(temp->fork);
+		free(lst);
+		lst = temp;
+	}
+}

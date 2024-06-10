@@ -6,7 +6,7 @@
 /*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:07:30 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/09 22:01:38 by thibaud          ###   ########.fr       */
+/*   Updated: 2024/06/10 17:03:57 by thibaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ size_t	ft_strlen(const char *s, char c)
 
 void	_exit_failure(t_data *ev_thing, char *str)
 {
-	if (args)
+	if (ev_thing)
 	{
 		
 	}

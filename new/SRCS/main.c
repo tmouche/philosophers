@@ -6,7 +6,7 @@
 /*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:02:42 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/09 21:56:53 by thibaud          ###   ########.fr       */
+/*   Updated: 2024/06/10 16:50:36 by thibaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,14 @@ int	main(int ac, char **av)
 	if (ac < 5 || ac > 6)
 		_exit_failure(NULL, "error : Incorrect number of arguments\n");
 	_init_argument(&args, av, ac);
+	ev_thing.args = &args;
 	_init_mutex(&ev_thing);
 	threads = malloc(sizeof(pthread_t) * (args.philos));
 	if (!threads)
 		return (-1);
+	ev_thing.threads = threads;
 	ev_thing.head = _init_philos(&ev_thing, &args);
 	if (!ev_thing.head)
 		return (free(threads), -1);
-	ev_thing.threads = threads;
-	ev_thing.args = &args;
 	_philo_exec(&ev_thing, threads);
 }

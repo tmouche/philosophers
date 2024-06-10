@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
+/*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:08:13 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/09 15:32:31 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/10 17:03:45 by thibaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ size_t	ft_strlen(const char *s, char c);
 void	_exit_failure(t_data *args, char *str);
 t_philo	*_init_philos(t_data *ev_thing, t_ref *args);
 
+void	_lstclear(t_philo *lst, int	stop);
 t_philo	*_lstnew(t_ref *args, int number);
 void	*_routine(void *args);
 
