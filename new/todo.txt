@@ -1,1 +1,3 @@
 check l init philo status
+attention a l exit sur les frees
+faire la norme et c est ok

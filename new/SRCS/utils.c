@@ -6,7 +6,7 @@
 /*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:07:30 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/10 17:03:57 by thibaud          ###   ########.fr       */
+/*   Updated: 2024/06/11 01:18:32 by thibaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,19 @@ size_t	ft_strlen(const char *s, char c)
 	return (i);
 }
 
-void	_exit_failure(t_data *ev_thing, char *str)
+void	_exit_end(t_data *ev_thing, char *str, t_end last)
 {
 	if (ev_thing)
 	{
-		
+		_lstclear(ev_thing->head, 1);
+		free(ev_thing->threads);
+		pthread_mutex_destroy(&ev_thing->simul->mutex);
+		pthread_mutex_destroy(&ev_thing->start->mutex);
 	}
-	write(2, str, ft_strlen(str, 0));
-	exit(EXIT_FAILURE);
+	if (last == OFF)
+	{
+		write(2, str, ft_strlen(str, 0));
+		exit(EXIT_FAILURE);
+	}
+	exit(EXIT_SUCCESS);
 }

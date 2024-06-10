@@ -6,7 +6,7 @@
 /*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 14:13:15 by tmouche           #+#    #+#             */
-/*   Updated: 2024/06/09 21:38:38 by thibaud          ###   ########.fr       */
+/*   Updated: 2024/06/11 01:04:32 by thibaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,67 +16,79 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static inline void	_printer(t_philo *philo , size_t *timer, char *str)
+static inline t_end	_printer(t_philo *philo , size_t *timer, char *str)
 {
 	struct timeval	clock;
 	size_t			time_stamp;
+	t_end			result;
 	
 	pthread_mutex_lock(&philo->ev_things->simul->mutex);
-	if (philo->ev_things->simul->simul == OFF)
-		exit (EXIT_SUCCESS);
+	result = philo->ev_things->simul->simul;
 	pthread_mutex_unlock(&philo->ev_things->simul->mutex);
+	if (result == OFF)
+		return (OFF);
 	if (philo->state == DEAD)
 	{
 		pthread_mutex_lock(&philo->ev_things->simul->mutex);
 		philo->ev_things->simul->simul = OFF;
 		pthread_mutex_unlock(&philo->ev_things->simul->mutex);
+		result = OFF;
 	}
 	gettimeofday(&clock, NULL);
 	time_stamp = clock.tv_usec / M_SEC + ((clock.tv_sec - timer[0]) * 1000) - timer[1];
+	pthread_mutex_lock(&philo->ev_things->start->mutex);
 	printf("%ld %d %s\n", time_stamp, philo->name, str);
+	pthread_mutex_unlock(&philo->ev_things->start->mutex);
+	return (result);
 }
 
-static inline void	_thinking(t_philo *philo,  size_t *timer)
+static inline t_end	_thinking(t_philo *philo,  size_t *timer)
 {
+	t_fstate	result;
+	
 	if (philo->fhand == 0)
 	{
 		pthread_mutex_lock(&philo->fork->mutex);
-		if (philo->fork->data == TAKEN)
-		{
-			pthread_mutex_unlock(&philo->fork->mutex);
-			return ;
-		}
+		result = philo->fork->data;
+		pthread_mutex_unlock(&philo->fork->mutex);
+		if (result == TAKEN)
+			return (ON);
+		pthread_mutex_lock(&philo->fork->mutex);
 		philo->fork->data = TAKEN;
 		pthread_mutex_unlock(&philo->fork->mutex);
-		_printer(philo, timer, "has taken a fork");
+		if (_printer(philo, timer, "has taken a fork") == OFF)
+			return (OFF);
 		philo->fhand = 1;
 	}
 	pthread_mutex_lock(&philo->next->fork->mutex);
-	if (philo->next->fork->data == TAKEN)
-	{
-		pthread_mutex_unlock(&philo->next->fork->mutex);
-		return ;
-	}
+	result = philo->next->fork->data;
+	pthread_mutex_unlock(&philo->next->fork->mutex);
+	if (result == TAKEN)
+		return (ON);
+	pthread_mutex_lock(&philo->next->fork->mutex);
 	philo->fork->data = TAKEN;
 	pthread_mutex_unlock(&philo->next->fork->mutex);
-	_printer(philo, timer, "has taken a fork");
+	if (_printer(philo, timer, "has taken a fork") == OFF)
+		return (OFF);
 	philo->fhand = 2;
 	philo->state = EATING;
-	_printer(philo, timer, "is eating");
+	return (_printer(philo, timer, "is eating"));
 }
 
-static inline void	_sleeping(t_philo *philo, size_t *timer)
+static inline t_end	_sleeping(t_philo *philo, size_t *timer)
 {
 	philo->time_to_sleep += 1;
 	if (philo->time_to_sleep == philo->args->time_to_sleep)
 	{
 		philo->time_to_sleep = 0;
 		philo->state = THINKING;
-		_printer(philo, timer, "is thinking");
+		if (_printer(philo, timer, "is thinking") == OFF)
+			return (OFF);
 	}
+	return (ON);
 }
 
-static inline int	_eating(t_philo *philo,  size_t *timer)
+static inline t_end	_eating(t_philo *philo,  size_t *timer)
 {
 	++philo->time_to_eat;
 	if (philo->time_to_eat == philo->args->time_to_eat)
@@ -92,11 +104,12 @@ static inline int	_eating(t_philo *philo,  size_t *timer)
 		pthread_mutex_unlock(&philo->next->fork->mutex);
 		philo->fhand = 0;
 		if (philo->args->max_time_eat == philo->time_eaten)
-			return (0);
+			return (OFF);
 		philo->state = SLEEPING;
-		_printer(philo, timer, "is sleeping");
+		if (_printer(philo, timer, "is sleeping") == OFF)
+			return (OFF);
 	}
-	return (1);
+	return (ON);
 }
 
 void	*_routine(void *args)
@@ -122,19 +135,26 @@ void	*_routine(void *args)
 			if (philo->time_to_die == philo->args->time_to_die)
 			{
 				philo->state = DEAD;
-				_printer(philo, starter, "is dead");
-				exit (EXIT_FAILURE);
+				if (_printer(philo, starter, "is dead") == OFF)
+					return (NULL);
 			}
 			if (philo->state == EATING)
 			{
-				if (_eating(philo, starter) == 0)
+				if (_eating(philo, starter) == OFF)
 					return (NULL);
 			}
 			else if (philo->state == SLEEPING)
-				_sleeping(philo, starter);
+			{
+				if (_sleeping(philo, starter) == OFF)
+					return (NULL);
+			}
 			else
-				_thinking(philo, starter);
+			{
+				if (_thinking(philo, starter) == OFF)
+					return (NULL);
+			}
 			temp_usec = clock.tv_usec / M_SEC;
 		}
+		
 	}
 }

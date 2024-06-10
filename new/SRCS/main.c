@@ -6,7 +6,7 @@
 /*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:02:42 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/10 16:50:36 by thibaud          ###   ########.fr       */
+/*   Updated: 2024/06/11 00:35:17 by thibaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ static void 	_init_mutex(t_data *ev_thing)
 	static t_mutex_start	start;
 	
 	if (pthread_mutex_init(&simul.mutex, NULL) != 0)
-		_exit_failure(NULL, "error: Mutex Init fail\n");
+		_exit_end(NULL, "error: Mutex Init fail\n", OFF);
 	simul.simul = ON;
 	ev_thing->simul = &simul;
 	if (pthread_mutex_init(&start.mutex, NULL) != 0)
 	{
 		pthread_mutex_destroy(&start.mutex);
-		_exit_failure(NULL, "error: Mutex Init fail\n");
+		_exit_end(NULL, "error: Mutex Init fail\n", OFF);
 	}
 	ev_thing->start = &start;
 }
@@ -43,7 +43,7 @@ static void	_init_argument(t_ref *args, char **av, int ac)
 	{
 		temp[i] = _atoi(av[i + 1]);
 		if (temp[i] == -1)
-			_exit_failure(NULL, "Error : Invalid argument\n");
+			_exit_end(NULL, "Error : Invalid argument\n", OFF);
 		++i;
 	}
 	args->philos = temp[0];
@@ -59,13 +59,13 @@ static void	_philo_exec(t_data *ev_thing, pthread_t *threads)
 	t_philo	*philo;
 	int		i;
 	
-	i = 0;
 	philo = ev_thing->head;
 	pthread_mutex_lock(&ev_thing->start->mutex);
+	i = 0;
 	while (i < ev_thing->args->philos)
 	{
 		if (pthread_create(&threads[i], NULL, _routine, philo) != 0)
-			_exit_failure(ev_thing, "Pthread failed\n");
+			_exit_end(ev_thing, "Pthread failed\n", OFF);
 		philo = philo->next;
 		++i;
 	}
@@ -76,6 +76,7 @@ static void	_philo_exec(t_data *ev_thing, pthread_t *threads)
 		pthread_join(threads[i], NULL);
 		i++;
 	}
+	_exit_end(ev_thing, NULL, ON);
 }
 
 int	main(int ac, char **av)
@@ -85,10 +86,9 @@ int	main(int ac, char **av)
 	t_ref			args;
 	
 	if (ac < 5 || ac > 6)
-		_exit_failure(NULL, "error : Incorrect number of arguments\n");
+		_exit_end(NULL, "error : Incorrect number of arguments\n", OFF);
 	_init_argument(&args, av, ac);
 	ev_thing.args = &args;
-	_init_mutex(&ev_thing);
 	threads = malloc(sizeof(pthread_t) * (args.philos));
 	if (!threads)
 		return (-1);
@@ -96,5 +96,7 @@ int	main(int ac, char **av)
 	ev_thing.head = _init_philos(&ev_thing, &args);
 	if (!ev_thing.head)
 		return (free(threads), -1);
+	_init_mutex(&ev_thing);
 	_philo_exec(&ev_thing, threads);
+	return (1);
 }

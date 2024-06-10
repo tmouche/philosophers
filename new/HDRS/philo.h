@@ -6,7 +6,7 @@
 /*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:08:13 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/10 17:03:45 by thibaud          ###   ########.fr       */
+/*   Updated: 2024/06/10 22:45:58 by thibaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ typedef struct s_data
 
 ssize_t	_atoi(char *str);
 size_t	ft_strlen(const char *s, char c);
-void	_exit_failure(t_data *args, char *str);
+void	_exit_end(t_data *ev_thing, char *str, t_end last);
 t_philo	*_init_philos(t_data *ev_thing, t_ref *args);
 
 void	_lstclear(t_philo *lst, int	stop);

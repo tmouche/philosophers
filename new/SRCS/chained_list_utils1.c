@@ -6,12 +6,13 @@
 /*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 12:33:19 by tmouche           #+#    #+#             */
-/*   Updated: 2024/06/10 17:02:01 by thibaud          ###   ########.fr       */
+/*   Updated: 2024/06/11 01:31:18 by thibaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../HDRS/philo.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 t_philo	*_lstnew(t_ref *args, int number)
 {
@@ -42,10 +43,8 @@ void	_lstclear(t_philo *lst, int	stop)
 {
 	t_philo	*temp;
 
-	if (!lst)
-		return ;
 	temp = lst;
-	while (lst)
+	while (lst && lst->prev)
 	{
 		temp = temp->prev;
 		if (stop == 1)
