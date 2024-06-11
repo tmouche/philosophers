@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine_action.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
+/*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 16:53:41 by tmouche           #+#    #+#             */
-/*   Updated: 2024/06/11 17:36:51 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/11 18:44:20 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,12 @@
 
 static inline t_end	_thinking_hand_st(t_philo *philo,  size_t *timer)
 {
-	t_fstate	result;
-	
 	pthread_mutex_lock(&philo->fork->mutex);
-	result = philo->fork->data;
-	pthread_mutex_unlock(&philo->fork->mutex);
-	if (result == TAKEN)
+	if (philo->fork->data == TAKEN)
+	{
+		pthread_mutex_unlock(&philo->fork->mutex);
 		return (ON);
-	pthread_mutex_lock(&philo->fork->mutex);
+	}
 	philo->fork->data = TAKEN;
 	pthread_mutex_unlock(&philo->fork->mutex);
 	if (_printer(philo, timer, "has taken a fork") == OFF)
@@ -36,14 +34,12 @@ static inline t_end	_thinking_hand_st(t_philo *philo,  size_t *timer)
 
 static inline t_end	_thinking_hand_nd(t_philo *philo,  size_t *timer)
 {
-	t_fstate	result;
-
 	pthread_mutex_lock(&philo->next->fork->mutex);
-	result = philo->next->fork->data;
-	pthread_mutex_unlock(&philo->next->fork->mutex);
-	if (result == TAKEN)
+	if (philo->next->fork->data == TAKEN)
+	{
+		pthread_mutex_unlock(&philo->next->fork->mutex);
 		return (ON);
-	pthread_mutex_lock(&philo->next->fork->mutex);
+	}
 	philo->fork->data = TAKEN;
 	pthread_mutex_unlock(&philo->next->fork->mutex);
 	if (_printer(philo, timer, "has taken a fork") == OFF)

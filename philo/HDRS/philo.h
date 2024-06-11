@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
+/*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:08:13 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/11 17:17:45 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/11 18:30:47 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct s_mutux_start
 
 typedef	struct s_mutex_simul
 {
-	t_end			simul;
+	int				simul;
 	pthread_mutex_t	mutex;
 }				t_mutex_simul;
 

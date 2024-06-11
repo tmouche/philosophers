@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
+/*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 14:13:15 by tmouche           #+#    #+#             */
-/*   Updated: 2024/06/11 17:38:59 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/11 18:44:44 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,22 @@ inline t_end	_printer(t_philo *philo , size_t *timer, char *str)
 	size_t			time_stamp;
 	t_end			result;
 	
+	result = ON;
+	gettimeofday(&clock, NULL);
+	time_stamp = clock.tv_usec / M_SEC + ((clock.tv_sec - timer[0]) * 1000) - timer[1];
 	pthread_mutex_lock(&philo->ev_things->simul->mutex);
-	result = philo->ev_things->simul->simul;
+	if (philo->ev_things->simul->simul != 0)
+		return (pthread_mutex_unlock(&philo->ev_things->simul->mutex) ,OFF);
 	pthread_mutex_unlock(&philo->ev_things->simul->mutex);
-	if (result == OFF)
-		return (OFF);
 	if (philo->state == DEAD)
 	{
 		pthread_mutex_lock(&philo->ev_things->simul->mutex);
-		philo->ev_things->simul->simul = OFF;
+		philo->ev_things->simul->simul += 1;
+		if (philo->ev_things->simul->simul > 1)
+			return (pthread_mutex_unlock(&philo->ev_things->simul->mutex), OFF);
 		pthread_mutex_unlock(&philo->ev_things->simul->mutex);
 		result = OFF;
 	}
-	gettimeofday(&clock, NULL);
-	time_stamp = clock.tv_usec / M_SEC + ((clock.tv_sec - timer[0]) * 1000) - timer[1];
 	pthread_mutex_lock(&philo->ev_things->start->mutex);
 	printf("%ld %d %s\n", time_stamp, philo->name, str);
 	pthread_mutex_unlock(&philo->ev_things->start->mutex);
@@ -50,7 +52,7 @@ static inline t_end	_routine_exec(t_philo *philo, int *temp_usec, size_t *starte
 	if (*temp_usec != clock.tv_usec / M_SEC)
 	{
 		philo->time_to_die += 1;
-		if (philo->time_to_die == philo->args->time_to_die)
+		if (philo->time_to_die > philo->args->time_to_die)
 		{
 			philo->state = DEAD;
 			if (_printer(philo, starter, "is dead") == OFF)
