@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
+/*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 14:13:15 by tmouche           #+#    #+#             */
-/*   Updated: 2024/06/11 19:21:23 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/12 01:49:59 by thibaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-inline t_end	_printer(t_philo *philo , size_t *timer, char *str, struct timeval clock)
+inline t_end	_printer(t_philo *philo , size_t *timer, char *str)
 {
+	struct timeval clock;
 	t_mutex_simul	*simul;
 	size_t			time_stamp;
 	t_end			result;
 	
 	result = ON;
+	gettimeofday(&clock, NULL);
 	simul = philo->ev_things->simul;
 	pthread_mutex_lock(&simul->mutex);
 	if (simul->simul != 0)
@@ -51,18 +53,17 @@ static inline t_end	_routine_exec(t_philo *philo, int *temp_usec, size_t *starte
 	gettimeofday(&clock, NULL);
 	if (*temp_usec != clock.tv_usec / M_SEC)
 	{
-		philo->time_to_die += 1;
-		if (philo->time_to_die == philo->args->time_to_die)
+		if (clock.tv_usec / M_SEC - philo->time_to_die == philo->args->time_to_die)
 		{
 			philo->state = DEAD;
-			if (_printer(philo, starter, "is dead", clock) == OFF)
+			if (_printer(philo, starter, "is dead") == OFF)
 				return (OFF);
 		}
-		if (philo->state == EATING && _eating(philo, starter, clock) == OFF)
+		if (philo->state == EATING && _eating(philo, starter, clock.tv_usec / M_SEC) == OFF)
 			return (OFF);
-		else if (philo->state == SLEEPING && _sleeping(philo, starter, clock) == OFF)
+		else if (philo->state == SLEEPING && _sleeping(philo, starter) == OFF)
 			return (OFF);
-		else if (philo->state == THINKING && _thinking(philo, starter, clock) == OFF)
+		else if (philo->state == THINKING && _thinking(philo, starter) == OFF)
 			return (OFF);
 		*temp_usec = clock.tv_usec / M_SEC;
 	}
@@ -83,8 +84,10 @@ void	*_routine(void *args)
 	starter[0] = clock.tv_sec;
 	starter[1] = clock.tv_usec / M_SEC;
 	temp_usec = clock.tv_usec / M_SEC;
+	philo->time_to_die = temp_usec;
 	while (1)
 	{
+		usleep(50);
 		if (_routine_exec(philo, &temp_usec, starter) == OFF)
 			return (NULL);
 	}
