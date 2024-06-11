@@ -6,7 +6,7 @@
 /*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:08:13 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/11 17:07:38 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/11 17:17:45 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@
 typedef enum	e_end
 {
 	ON,
-	OFF
+	OFF,
+	CONTINUE
 }				t_end;
 
 typedef enum	e_fstate

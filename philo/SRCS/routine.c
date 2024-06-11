@@ -6,7 +6,7 @@
 /*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 14:13:15 by tmouche           #+#    #+#             */
-/*   Updated: 2024/06/11 17:05:46 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/11 17:38:59 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ inline t_end	_printer(t_philo *philo , size_t *timer, char *str)
 	size_t			time_stamp;
 	t_end			result;
 	
-	gettimeofday(&clock, NULL);
 	pthread_mutex_lock(&philo->ev_things->simul->mutex);
 	result = philo->ev_things->simul->simul;
 	pthread_mutex_unlock(&philo->ev_things->simul->mutex);
@@ -35,6 +34,7 @@ inline t_end	_printer(t_philo *philo , size_t *timer, char *str)
 		pthread_mutex_unlock(&philo->ev_things->simul->mutex);
 		result = OFF;
 	}
+	gettimeofday(&clock, NULL);
 	time_stamp = clock.tv_usec / M_SEC + ((clock.tv_sec - timer[0]) * 1000) - timer[1];
 	pthread_mutex_lock(&philo->ev_things->start->mutex);
 	printf("%ld %d %s\n", time_stamp, philo->name, str);
@@ -42,12 +42,12 @@ inline t_end	_printer(t_philo *philo , size_t *timer, char *str)
 	return (result);
 }
 
-inline t_end	_routine_exec(t_philo *philo, int temp_usec, size_t *starter)
+static inline t_end	_routine_exec(t_philo *philo, int *temp_usec, size_t *starter)
 {
 	struct timeval	clock;
 
 	gettimeofday(&clock, NULL);
-	if (temp_usec != clock.tv_usec / M_SEC)
+	if (*temp_usec != clock.tv_usec / M_SEC)
 	{
 		philo->time_to_die += 1;
 		if (philo->time_to_die == philo->args->time_to_die)
@@ -62,8 +62,9 @@ inline t_end	_routine_exec(t_philo *philo, int temp_usec, size_t *starter)
 			return (OFF);
 		else if (philo->state == THINKING && _thinking(philo, starter) == OFF)
 			return (OFF);
-		temp_usec = clock.tv_usec / M_SEC;
+		*temp_usec = clock.tv_usec / M_SEC;
 	}
+	return (ON);
 }
 
 void	*_routine(void *args)
@@ -82,7 +83,7 @@ void	*_routine(void *args)
 	temp_usec = clock.tv_usec / M_SEC;
 	while (1)
 	{
-		if (_routine_exec(philo, temp_usec, starter) == OFF)
+		if (_routine_exec(philo, &temp_usec, starter) == OFF)
 			return (NULL);
 	}
 }
