@@ -6,7 +6,7 @@
 /*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:08:13 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/11 18:30:47 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/11 18:47:09 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,10 @@ void	_lstclear(t_philo *lst, int	stop);
 t_philo	*_init_philos(t_data *ev_thing, t_ref *args);
 void	_exit_end(t_data *ev_thing, char *str, t_end last);
 
-t_end	_eating(t_philo *philo,  size_t *timer);
-t_end	_sleeping(t_philo *philo,  size_t *timer);
-t_end	_thinking(t_philo *philo,  size_t *timer);
-t_end	_printer(t_philo *philo , size_t *timer, char *str);
+t_end	_eating(t_philo *philo,  size_t *timer, struct timeval clock);
+t_end	_sleeping(t_philo *philo,  size_t *timer, struct timeval clock);
+t_end	_thinking(t_philo *philo,  size_t *timer, struct timeval clock);
+t_end	_printer(t_philo *philo , size_t *timer, char *str, struct timeval clock);
 void	*_routine(void *args);
 
 #endif
