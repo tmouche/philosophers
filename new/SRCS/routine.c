@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 14:13:15 by tmouche           #+#    #+#             */
-/*   Updated: 2024/06/11 01:04:32 by thibaud          ###   ########.fr       */
+/*   Updated: 2024/06/11 16:47:25 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ void	*_routine(void *args)
 				if (_printer(philo, starter, "is dead") == OFF)
 					return (NULL);
 			}
-			if (philo->state == EATING)
+			if (philo->state == EATING && )
 			{
 				if (_eating(philo, starter) == OFF)
 					return (NULL);

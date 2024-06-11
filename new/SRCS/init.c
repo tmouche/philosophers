@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 00:35:50 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/10 23:10:57 by thibaud          ###   ########.fr       */
+/*   Updated: 2024/06/11 16:43:16 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,13 @@
 static void	_init_philo_status(t_philo **philo)
 {
 	t_philo	*head;
+	int		count;
 
 	head = *(philo);
-	head->fork->data = TAKEN;
-	printf("%d %d has taken a fork\n", 0, head->name);
-	head->next->fork->data = TAKEN;
-	printf("%d %d has taken a fork\n", 0, head->name);
-	head->state = EATING;
-	printf("%d %d is eating\n", 0, head->name);
-	head = head->next;
-	while (head->name != 1)
+	count = (*philo)->args->philos;
+	while (count > 0)
 	{
-		if (head->name % 2 != 0 && head->next->name != 1)
+		if (head->next->name != 1 && head->fork->data == FREE && head->next->fork->data == FREE)
 		{
 			head->fork->data = TAKEN;
 			printf("%d %d has taken a fork\n", 0, head->name);
@@ -41,6 +36,7 @@ static void	_init_philo_status(t_philo **philo)
 			head->state = THINKING;
 			printf("%d %d is thinking\n", 0, head->name);
 		}
+		--count;
 		head = head->next;
 	}
 }
@@ -76,6 +72,8 @@ t_philo	*_init_philos(t_data *ev_thing, t_ref *args)
 			return (NULL);
 		++i;
 	}
+	if (args->philos == 1)
+		temp_last = temp;
 	while (temp_last && temp_last->prev)
 		temp_last = temp_last->prev;
 	ev_thing->head = temp_last;

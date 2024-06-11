@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:07:30 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/11 01:18:32 by thibaud          ###   ########.fr       */
+/*   Updated: 2024/06/11 15:47:41 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	_exit_end(t_data *ev_thing, char *str, t_end last)
 {
 	if (ev_thing)
 	{
-		_lstclear(ev_thing->head, 1);
+		// _lstclear(ev_thing->head, 1);
 		free(ev_thing->threads);
 		pthread_mutex_destroy(&ev_thing->simul->mutex);
 		pthread_mutex_destroy(&ev_thing->start->mutex);

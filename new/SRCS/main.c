@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:02:42 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/11 00:35:17 by thibaud          ###   ########.fr       */
+/*   Updated: 2024/06/11 16:44:11 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ int	main(int ac, char **av)
 		_exit_end(NULL, "error : Incorrect number of arguments\n", OFF);
 	_init_argument(&args, av, ac);
 	ev_thing.args = &args;
+	if (args.philos == 0)
+		_exit_end(NULL, "error : Need some philos\n", OFF);
 	threads = malloc(sizeof(pthread_t) * (args.philos));
 	if (!threads)
 		return (-1);
