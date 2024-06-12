@@ -1,3 +1,2 @@
 free exit
-jouer sur le nombre de mutex et les usleep pour laisser du cpu
 faire la norme et c est ok

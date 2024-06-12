@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   chained_list_utils1.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thibaud <thibaud@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 12:33:19 by tmouche           #+#    #+#             */
-/*   Updated: 2024/06/11 01:31:18 by thibaud          ###   ########.fr       */
+/*   Updated: 2024/06/12 11:13:23 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,22 +34,28 @@ t_philo	*_lstnew(t_ref *args, int number)
 	new->time_to_sleep = 0;
 	new->fhand = 0;
 	new->args = args;
-	new->next = NULL;	
+	new->next = NULL;
 	new->prev = NULL;
 	return (new);
 }
 
-void	_lstclear(t_philo *lst, int	stop)
+void	_lstclear(t_philo *lst, t_end state)
 {
 	t_philo	*temp;
 
-	temp = lst;
-	while (lst && lst->prev)
+	if (state == OFF)
 	{
-		temp = temp->prev;
-		if (stop == 1)
-			pthread_mutex_destroy(&temp->fork->mutex);
-		free(temp->fork);
+		if (lst->prev != lst)
+			lst->prev->next = NULL;
+		else
+			lst->next = NULL;
+	}
+	temp = lst;
+	while (lst)
+	{
+		temp = temp->next;
+		pthread_mutex_destroy(&lst->fork->mutex);
+		free(lst->fork);
 		free(lst);
 		lst = temp;
 	}

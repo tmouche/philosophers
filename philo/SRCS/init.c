@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
+/*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 00:35:50 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/11 16:43:16 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/12 11:14:34 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ static void	_init_philo_status(t_philo **philo)
 	count = (*philo)->args->philos;
 	while (count > 0)
 	{
-		if (head->next->name != 1 && head->fork->data == FREE && head->next->fork->data == FREE)
+		if (head->next->name != 1 && head->fork->data == FREE
+			&& head->next->fork->data == FREE)
 		{
 			head->fork->data = TAKEN;
 			printf("%d %d has taken a fork\n", 0, head->name);
@@ -47,13 +48,17 @@ static _Bool	_setup_list(t_data *ev_thing, t_philo **temp,
 	*temp_last = *temp;
 	*temp = _lstnew(ev_thing->args, i);
 	if (!*temp)
-		return (_lstclear(*temp_last, 0), 0);
+		return (_lstclear(*temp_last, ON), 0);
+	if (pthread_mutex_init(&(*temp)->fork->mutex, NULL) != 0)
+	{
+		free((*temp)->fork);
+		free(*temp);
+		return (_lstclear(*temp_last, ON), 0);
+	}
 	(*temp)->ev_things = ev_thing;
 	if (*temp_last)
 		(*temp_last)->next = *temp;
 	(*temp)->prev = *temp_last;
-	if (pthread_mutex_init(&(*temp)->fork->mutex, NULL) != 0)
-		return (_lstclear(*temp, 1), 0);
 	return (1);
 }
 
@@ -61,8 +66,8 @@ t_philo	*_init_philos(t_data *ev_thing, t_ref *args)
 {
 	t_philo	*temp;
 	t_philo	*temp_last;
-	int 	i;
-	
+	int		i;
+
 	temp = NULL;
 	temp_last = NULL;
 	i = 1;

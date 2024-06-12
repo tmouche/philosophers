@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
+/*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:07:30 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/11 15:47:41 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/12 11:16:00 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ ssize_t	_atoi(char *str)
 		++i;
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		res *= 10; 
+		res *= 10;
 		res += (str[i] - 48);
 		++i;
 	}
@@ -50,12 +50,12 @@ void	_exit_end(t_data *ev_thing, char *str, t_end last)
 {
 	if (ev_thing)
 	{
-		// _lstclear(ev_thing->head, 1);
+		_lstclear(ev_thing->head, last);
 		free(ev_thing->threads);
 		pthread_mutex_destroy(&ev_thing->simul->mutex);
 		pthread_mutex_destroy(&ev_thing->start->mutex);
 	}
-	if (last == OFF)
+	if (str)
 	{
 		write(2, str, ft_strlen(str, 0));
 		exit(EXIT_FAILURE);
