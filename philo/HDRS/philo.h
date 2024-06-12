@@ -6,13 +6,13 @@
 /*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 02:08:13 by thibaud           #+#    #+#             */
-/*   Updated: 2024/06/12 11:09:27 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/12 13:06:20 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
-# define M_SEC 1000
+# define MS 1000
 # include <stdlib.h>
 # include <pthread.h>
 # include <unistd.h>
@@ -58,9 +58,9 @@ typedef struct s_mutex_data
 typedef struct s_ref
 {
 	int		philos;
-	int		time_to_die;
-	int		time_to_eat;
-	int		time_to_sleep;
+	size_t	time_to_die;
+	size_t	time_to_eat;
+	size_t	time_to_sleep;
 	int		max_time_eat;
 }				t_ref;
 
@@ -70,9 +70,9 @@ typedef struct s_philo
 	int				name;
 	t_state			state;
 	int				fhand;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
+	size_t			time_to_die;
+	size_t			time_to_eat;
+	size_t			time_to_sleep;
 	int				time_eaten;
 	t_ref			*args;
 	struct s_data	*ev_things;
@@ -97,10 +97,10 @@ void	_lstclear(t_philo *lst, t_end state);
 t_philo	*_init_philos(t_data *ev_thing, t_ref *args);
 void	_exit_end(t_data *ev_thing, char *str, t_end last);
 
-t_end	_eating(t_philo *philo, size_t *timer, int act_time);
-t_end	_sleeping(t_philo *philo, size_t *timer);
-t_end	_thinking(t_philo *philo, size_t *timer);
-t_end	_printer(t_philo *philo, size_t *timer, char *str);
+t_end	_eating(t_philo *philo, size_t timer, size_t act_time);
+t_end	_sleeping(t_philo *philo, size_t timer, size_t act_time);
+t_end	_thinking(t_philo *philo, size_t timer, size_t act_time);
+t_end	_printer(t_philo *philo, size_t timer, char *str);
 void	*_routine(void *args);
 
 #endif
