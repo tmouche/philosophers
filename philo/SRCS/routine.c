@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmouche <tmouche@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tmouche < tmouche@student.42lyon.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 14:13:15 by tmouche           #+#    #+#             */
-/*   Updated: 2024/06/12 13:59:45 by tmouche          ###   ########.fr       */
+/*   Updated: 2024/06/15 16:40:15 by tmouche          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static inline t_end	_routine_exec(t_philo *philo, size_t *temp_usec,
 		if (act_time - philo->time_to_die >= philo->args->time_to_die)
 		{
 			philo->state = DEAD;
-			if (_printer(philo, starter, "is dead") == OFF)
+			if (_printer(philo, starter, "died") == OFF)
 				return (OFF);
 		}
 		if (philo->state == EATING
